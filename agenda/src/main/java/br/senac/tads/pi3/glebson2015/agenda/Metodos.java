@@ -27,7 +27,7 @@ public class Metodos {
         Connection conn = null;
         ArrayList<Pessoa> pessoas = new ArrayList<>();
         Conexao conexao = new Conexao();
-        String sql = "SELECT ID_PESSOA, NM_PESSOA, DT_NASCIMENTO, VL_TELEFONE, VL_EMAIL FROM TB_PESSOA";
+        String sql = "SELECT ID_CONTATO, NM_CONTATO, DT_NASCIMENTO, VL_TELEFONE, VL_EMAIL, DT_CADASTRO FROM TB_CONTATO";
         try {
             conn = conexao.obterConexao();
             stmt = conn.createStatement();
@@ -36,8 +36,8 @@ public class Metodos {
 
             while (resultados.next()) {
                 Pessoa pessoa = new Pessoa();
-                pessoa.setId(resultados.getLong("ID_PESSOA"));
-                pessoa.setNome(resultados.getString("NM_PESSOA"));
+                pessoa.setId(resultados.getLong("ID_CONTATO"));
+                pessoa.setNome(resultados.getString("NM_CONTATO"));
                 pessoa.setDt_nascimento(resultados.getDate("DT_NASCIMENTO"));
                 pessoa.setEmail(resultados.getString("VL_EMAIL"));
                 pessoa.setTelefone(resultados.getString("VL_TELEFONE"));
@@ -71,7 +71,7 @@ public class Metodos {
         PreparedStatement stmt = null;
         Connection conn = null;
         Conexao conexao = new Conexao();
-        String sql = "INSERT INTO TB_PESSOA (NM_PESSOA, DT_NASCIMENTO, VL_TELEFONE, VL_EMAIL, DT_CADASTRO)"
+        String sql = "INSERT INTO TB_CONTATO (NM_CONTATO, DT_NASCIMENTO, VL_TELEFONE, VL_EMAIL, DT_CADASTRO)"
                 + "VALUES(?,?,?,?,?)";
         try {
             conn = conexao.obterConexao();
@@ -107,7 +107,7 @@ public class Metodos {
     public void alteraPessoas(Pessoa pessoa) {
 
         Conexao conexao = new Conexao();
-        String sql = "UPDATE TB_PESSOA SET (NM_PESSOA, DT_NASCIMENTO, VL_TELEFONE, VL_EMAIL, DT_CADASTRO)"
+        String sql = "UPDATE TB_CONTATO SET (NM_CONTATO, DT_NASCIMENTO, VL_TELEFONE, VL_EMAIL, DT_CADASTRO)"
                 + "VALUES(?,?,?,?,?) WHERE ID_CONTATO = ?";
 
         PreparedStatement stmt = null;
@@ -149,7 +149,7 @@ public class Metodos {
     //Método que remove o contato de acordo com seu ID
     public void removePessoas(int id) {
 
-        String sql = "DELETE FROM TB_PESSOA WHERE ID_CONTATO = ?";
+        String sql = "DELETE FROM TB_CONTATO WHERE ID_CONTATO = ?";
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement stmt = null;

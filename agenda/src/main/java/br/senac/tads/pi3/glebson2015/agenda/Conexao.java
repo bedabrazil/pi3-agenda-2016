@@ -18,11 +18,11 @@ public class Conexao {
 
         Connection conn = null;
         //Passo: Registrar drive JDBC
-        Class.forName("org.apche.derby.jdbc.ClientDataSource");
+        Class.forName("org.apache.derby.jdbc.ClientDataSource");
 
         //Passo 2: Abrir a conexão
         conn = DriverManager.getConnection(
-                "jdbc:derby://localhost:1527/agendabd;SecurityMechanism=3",
+                "jdbc:derby://localhost:1527/Agenda;SecurityMechanism=3",
                 "app", //Usuário
                 "app" //Senha
         );
