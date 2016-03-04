@@ -133,12 +133,24 @@ public class Agenda {
                     break;
                 case 3:
                     listarPessoas();
-                    System.out.println("Escolha uma pessoa pelo ID para alterar");
+                    System.out.println("Escolha uma pessoa pelo ID para mostrar");
                     id =  input.nextInt();
                     pessoa = metodo.buscarPessoaPorId(id);
-                    mostrarPessoa(pessoa);
+                    if(pessoa != null){
+                        mostrarPessoa(pessoa);
+                    }else{
+                        System.out.println("Contato não existe.");
+                    }
                     break;
                 case 4:
+                    listarPessoas();
+                    System.out.println("Escolha uma pessoa pelo ID para remover");
+                    id =  input.nextInt();
+                    if(metodo.removePessoas(id)){
+                        System.out.println("Contato removido com sucesso.");
+                    }else{
+                        System.out.println("Não foi possível remover.");
+                    }
                     break;
                 case 5:
                     listarPessoas();
