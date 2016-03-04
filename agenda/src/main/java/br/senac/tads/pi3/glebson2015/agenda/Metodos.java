@@ -35,7 +35,7 @@ public class Metodos {
             stmt = conn.createStatement();
             ResultSet resultados = stmt.executeQuery(sql);
             DateFormat formatadorData = new SimpleDateFormat("dd/MM/yyyy");
-            
+
             while (resultados.next()) {
                 Pessoa pessoa = new Pessoa();
                 pessoa.setId(resultados.getLong("ID_PESSOA"));
@@ -68,6 +68,7 @@ public class Metodos {
         return pessoas;
     }
 
+    
     public void cadastrarPessoas(Pessoa pessoa) {
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -104,4 +105,86 @@ public class Metodos {
         }
 
     }
+    //Método que altera os dados do contato de acordo com o ID
+    public void alteraPessoas(Pessoa pessoa) {
+
+        Conexao conexao = new Conexao();
+        String sql = "UPDATE contato SET (NM_PESSOA, DT_NASCIMENTO, VL_TELEFONE, VL_EMAIL, DT_CADASTRO)"
+                + "VALUES(?,?,?,?,?) WHERE ID_CONTATO = ?";
+
+        PreparedStatement stmt = null;
+        Connection conn = null;
+
+        try {
+
+            conn = conexao.obterConexao();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, pessoa.getNome());
+            stmt.setDate(2, pessoa.getDt_nascimento());
+            stmt.setString(3, pessoa.getTelefone());
+            stmt.setString(4, pessoa.getEmail());
+            stmt.setTimestamp(5, pessoa.getDt_cadastro());
+            stmt.executeQuery();
+            conn.close();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+        }
+
+    }
+    //Método que remove o contato de acordo com seu ID
+    public void removePessoas(int id) {
+
+        String sql = "DELETE FROM contato WHERE ID = ?";
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            
+            conn = conexao.obterConexao();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, id);
+            stmt.executeQuery();
+            conn.close();
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+        }
+
+    }
+
 }
