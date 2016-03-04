@@ -31,6 +31,16 @@ public class Agenda {
         }
         return sb.toString();
     }    
+    public static void mostrarPessoa(Pessoa pessoa){
+        System.out.println("");
+        System.out.println("++++++++++++++++++++++++++++");
+        System.out.println("Nome            => "+pessoa.getNome());
+        System.out.println("Telefone        => "+pessoa.getTelefone());
+        System.out.println("E-mail          => "+pessoa.getEmail());
+        System.out.println("Data Nascimento => "+pessoa.getDt_nascimento());
+        System.out.println("++++++++++++++++++++++++++++");
+        System.out.println("");
+    }
     public static Date getData(String data) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         df.setLenient(true);
@@ -61,7 +71,7 @@ public class Agenda {
         Pessoa pessoa = null;
         Metodos metodo = new Metodos();
         //Variável de opção
-        int opcao;
+        int opcao, id;
 
         //Scanner - Entrada de dados do usuário
         Scanner input = new Scanner(System.in);
@@ -105,7 +115,7 @@ public class Agenda {
                 case 2:
                     listarPessoas();
                     System.out.println("Escolha uma pessoa pelo ID para alterar");
-                    int id =  input.nextInt();
+                    id =  input.nextInt();
                     pessoa = metodo.buscarPessoaPorId(id);
                     System.out.println("Você escolheu "+pessoa.getNome());
                     System.out.println("Altere o nome: ");
@@ -122,10 +132,16 @@ public class Agenda {
                     pessoa.setDt_nascimento(dt_nascimento);                    
                     break;
                 case 3:
+                    listarPessoas();
+                    System.out.println("Escolha uma pessoa pelo ID para alterar");
+                    id =  input.nextInt();
+                    pessoa = metodo.buscarPessoaPorId(id);
+                    mostrarPessoa(pessoa);
                     break;
                 case 4:
                     break;
                 case 5:
+                    listarPessoas();
                     break;
                 case 6:
                     System.out.println("Saindo do Sistema!!");                
