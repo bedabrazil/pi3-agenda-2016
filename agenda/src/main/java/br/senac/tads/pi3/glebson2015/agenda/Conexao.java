@@ -22,7 +22,7 @@ public class Conexao {
 
         //Passo 2: Abrir a conexão
         conn = DriverManager.getConnection(
-                "jdbc:derby://localhost:1527/Agenda;SecurityMechanism=3",
+                "jdbc:derby://localhost:1527/agendabd;SecurityMechanism=3",
                 "app", //Usuário
                 "app" //Senha
         );
