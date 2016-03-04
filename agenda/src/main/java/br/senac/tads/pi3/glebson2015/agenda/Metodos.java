@@ -6,12 +6,10 @@
 package br.senac.tads.pi3.glebson2015.agenda;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -109,7 +107,7 @@ public class Metodos {
     public void alteraPessoas(Pessoa pessoa) {
 
         Conexao conexao = new Conexao();
-        String sql = "UPDATE contato SET (NM_PESSOA, DT_NASCIMENTO, VL_TELEFONE, VL_EMAIL, DT_CADASTRO)"
+        String sql = "UPDATE TB_PESSOA SET (NM_PESSOA, DT_NASCIMENTO, VL_TELEFONE, VL_EMAIL, DT_CADASTRO)"
                 + "VALUES(?,?,?,?,?) WHERE ID_CONTATO = ?";
 
         PreparedStatement stmt = null;
@@ -151,7 +149,7 @@ public class Metodos {
     //Método que remove o contato de acordo com seu ID
     public void removePessoas(int id) {
 
-        String sql = "DELETE FROM contato WHERE ID = ?";
+        String sql = "DELETE FROM TB_PESSOA WHERE ID_CONTATO = ?";
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement stmt = null;
