@@ -66,7 +66,10 @@ public class Metodos {
         return pessoas;
     }
 
-    
+    /*
+    @params entra com uma objeto pessoa para cadastrar
+    @return um booleano verdadeiro ou falso
+    */
     public boolean cadastrarPessoas(Pessoa pessoa) {
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -104,6 +107,10 @@ public class Metodos {
         }
         return false;
     }
+    /*
+    @params entra com um id para buscar um contato
+    @return um objeto pessoa
+    */
     public Pessoa buscarPessoaPorId(int id){
         String sql = "SELECT * FROM TB_CONTATO WHERE ID_CONTATO = ?";
         PreparedStatement stmt = null;
