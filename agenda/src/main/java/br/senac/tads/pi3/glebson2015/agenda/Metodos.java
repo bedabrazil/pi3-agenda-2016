@@ -67,7 +67,7 @@ public class Metodos {
     }
 
     
-    public void cadastrarPessoas(Pessoa pessoa) {
+    public boolean cadastrarPessoas(Pessoa pessoa) {
         PreparedStatement stmt = null;
         Connection conn = null;
         Conexao conexao = new Conexao();
@@ -81,8 +81,9 @@ public class Metodos {
             stmt.setString(3, pessoa.getTelefone());
             stmt.setString(4, pessoa.getEmail());
             stmt.setTimestamp(5, pessoa.getDt_cadastro());
-            stmt.executeQuery();
-            conn.close();
+            if (stmt.executeUpdate() > 0) {
+                return true;
+            }
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -101,10 +102,48 @@ public class Metodos {
                 }
             }
         }
-
+        return false;
+    }
+    public Pessoa buscarPessoaPorId(int id){
+        String sql = "SELECT * FROM TB_CONTATO WHERE ID_CONTATO = ?";
+        PreparedStatement stmt = null;
+        Connection conn = null;
+        Pessoa pessoa = null;
+        Conexao conexao = new Conexao();
+        try{
+            conn = conexao.obterConexao();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet resultado = stmt.executeQuery();
+            if(resultado.next()){
+                pessoa = new Pessoa();
+                pessoa.setNome(resultado.getString("NM_CONTATO"));
+                pessoa.setEmail(resultado.getString("VL_EMAIL"));
+                pessoa.setTelefone(resultado.getString("VL_TELEFONE"));
+                pessoa.setDt_nascimento(resultado.getDate("DT_NASCIMENTO"));
+            }
+        }catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return pessoa;
     }
     //Método que altera os dados do contato de acordo com o ID
-    public void alteraPessoas(Pessoa pessoa) {
+    public boolean alteraPessoas(Pessoa pessoa) {
 
         Conexao conexao = new Conexao();
         String sql = "UPDATE TB_CONTATO SET (NM_CONTATO, DT_NASCIMENTO, VL_TELEFONE, VL_EMAIL, DT_CADASTRO)"
@@ -122,8 +161,9 @@ public class Metodos {
             stmt.setString(3, pessoa.getTelefone());
             stmt.setString(4, pessoa.getEmail());
             stmt.setTimestamp(5, pessoa.getDt_cadastro());
-            stmt.executeQuery();
-            conn.close();
+            if (stmt.executeUpdate() > 0) {
+                return true;
+            }
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -144,10 +184,10 @@ public class Metodos {
             }
 
         }
-
+        return false;
     }
     //Método que remove o contato de acordo com seu ID
-    public void removePessoas(int id) {
+    public boolean removePessoas(int id) {
 
         String sql = "DELETE FROM TB_CONTATO WHERE ID_CONTATO = ?";
         Conexao conexao = new Conexao();
@@ -159,8 +199,9 @@ public class Metodos {
             conn = conexao.obterConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, id);
-            stmt.executeQuery();
-            conn.close();
+            if (stmt.executeUpdate() > 0) {
+                return true;
+            }
 
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
@@ -182,7 +223,7 @@ public class Metodos {
             }
 
         }
-
+        return false;
     }
 
 }

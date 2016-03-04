@@ -5,7 +5,14 @@
  */
 package br.senac.tads.pi3.glebson2015.agenda;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -13,16 +20,123 @@ import java.util.ArrayList;
  */
 public class Agenda {
 
-    public static void main(String[] args) {
+    public static String inverterDataBanco(String data) {
+        String[] split = data.split("/");
+        StringBuilder sb = new StringBuilder();
+        for (int i = split.length - 1; i >= 0; i--) {
+            sb.append(split[i]);
+            if (i != 0) {
+                sb.append("-");
+            }
+        }
+        return sb.toString();
+    }    
+    public static Date getData(String data) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        df.setLenient(true);
+        Date dt = null;
+
+        try {
+            String dataInvertida = inverterDataBanco(data);
+            dt = df.parse(dataInvertida);
+
+        } catch (ParseException ex) {
+            Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dt;
+    }    
+    public static void listarPessoas(){
         ArrayList<Pessoa> pessoas = new Metodos().listarPessoas();
         for(Pessoa pessoa:pessoas){
+            System.out.println("*****************");
             System.out.println("ID            => "+pessoa.getId());
             System.out.println("Nome          => "+pessoa.getNome());
             System.out.println("Email         => "+pessoa.getEmail());
             System.out.println("Telefone      => "+pessoa.getTelefone());
             System.out.println("DT NASCIMENTO => "+pessoa.getDt_nascimento());
             System.out.println("DT_CADASTRO   => "+pessoa.getDt_cadastro());
-        }
+        }        
+    }
+    public static void main(String[] args) {
+        Pessoa pessoa = null;
+        Metodos metodo = new Metodos();
+        //Variável de opção
+        int opcao;
+
+        //Scanner - Entrada de dados do usuário
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("******************************");
+        System.out.println("*     AGENDA DE CONTATOS     *");
+        System.out.println("******************************");
+
+        //Do while - Controla o menu da agenda por meio de condicionais if
+        do {
+
+            System.out.println("Escolha uma das opções do menu abaixo: \n1 - Cadastrar Contato"
+                    + "\n2 - Alterar Contato\n3 - Mostrar Contato\n4 - Excluir Contatos\n5 - Listar todos os Contatos\n6 - Sair da Agenda");
+            opcao = input.nextInt();
+            
+            switch(opcao){
+                case 1:
+                    pessoa = new Pessoa();        
+                    System.out.println("Digite um nome");
+                    String nome = input.next();
+                    pessoa.setNome(nome);
+                    System.out.println("Digite um email");
+                    String email = input.next();
+                    pessoa.setEmail(email);
+                    System.out.println("Digite um telefone");
+                    String telefone = input.next();
+                    pessoa.setTelefone(telefone);
+                    System.out.println("Digite uma data no formato dd/mm/aaaa");
+                    String data = input.next();
+                    java.util.Date dt_nasc = getData(data);
+                    java.sql.Date dt_nascimento = new java.sql.Date(dt_nasc.getTime());
+                    java.util.Date dt_cad = new java.util.Date();
+                    pessoa.setDt_cadastro(new Timestamp(dt_cad.getTime()));
+                    pessoa.setDt_nascimento(dt_nascimento);
+                    if(metodo.cadastrarPessoas(pessoa)){
+                        System.out.println("Pessoa Cadastrado com Sucesso.");
+                    }else{
+                        System.out.println("Algo de errado, tentennovamente");
+                    }
+                    break;
+                case 2:
+                    listarPessoas();
+                    System.out.println("Escolha uma pessoa pelo ID para alterar");
+                    int id =  input.nextInt();
+                    pessoa = metodo.buscarPessoaPorId(id);
+                    System.out.println("Você escolheu "+pessoa.getNome());
+                    System.out.println("Altere o nome: ");
+                    nome = input.next();
+                    System.out.println("Altere o email: ");
+                    email = input.next();
+                    System.out.println("Altere o telefone");
+                    telefone = input.next();
+                    data = input.next();
+                    dt_nasc = getData(data);
+                    dt_nascimento = new java.sql.Date(dt_nasc.getTime());
+                    dt_cad = new java.util.Date();
+                    pessoa.setDt_cadastro(new Timestamp(dt_cad.getTime()));
+                    pessoa.setDt_nascimento(dt_nascimento);                    
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    System.out.println("Saindo do Sistema!!");                
+                    break;
+            }
+
+        } while (opcao != 6);
+
     }
 
 }
+    
+    
+
